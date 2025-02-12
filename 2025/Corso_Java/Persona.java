@@ -41,4 +41,7 @@ public class Persona {
                 + persona.cognome);
     }
 
+    void saluta() {
+        System.out.println("Ciao sono la persona " + this.nome + " " + this.cognome);
+    }
 }

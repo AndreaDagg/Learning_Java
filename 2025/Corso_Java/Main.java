@@ -3,14 +3,21 @@ package Corso_Java;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Corso_Java.Interfaccie.Gazzella;
+import Corso_Java.Interfaccie.Leone;
+import Corso_Java.Interfaccie.Pesce;
+import Corso_Java.classi_astratte.auto_ClasseNonAstratta;
+
 public class Main {
 
     public static void main(String[] args) {
         /*
-         * FINAL:   Creazione di un menu per selezionare l'argomento da visualizzare con keyword FINAL ovvero non modificabile
-         * STATIC:  
+         * FINAL: Creazione di un menu per selezionare l'argomento da visualizzare con
+         * keyword FINAL ovvero non modificabile
+         * STATIC:
          */
-        final String[] argomenti = { "Array Bidimensionali", "Wrapper Classes", "Array List", "Classe Persona" };
+        final String[] argomenti = { "Array Bidimensionali", "Wrapper Classes", "Array List", "Classe Persona",
+                "Ereditarietà ed Overrride", "Classe Astratta", "Interfacce" };
         Scanner scannerArgomento = new Scanner(System.in);
 
         System.out.println("Argomenti: \n");
@@ -33,6 +40,15 @@ public class Main {
                 break;
             case 3:
                 classe_persona();
+                break;
+            case 4:
+                Ereditarietà();
+                break;
+            case 5:
+                classe_astratta();
+                break;
+            case 6:
+                interfaccia();
                 break;
 
             default:
@@ -112,7 +128,6 @@ public class Main {
     }
 
     private static void array_list() {
-        
 
         /*
          * ArrayList è una classe che permette di gestire un array di oggetti
@@ -166,7 +181,7 @@ public class Main {
         Persona persona1 = new Persona("Mario", "Rossi", 25, "Blu");
         Persona persona2 = new Persona("Luigi", "Verdi", 30, "Verde");
         Persona personaOverload = new Persona("Giovanni", "Bianchi");
-        
+
         persona1.stampaDati(false);
         persona2.stampaDati(false);
         personaOverload.stampaDati(true);
@@ -174,20 +189,71 @@ public class Main {
         System.out.println("\nPosizione in memoria di persona1: " + persona1);
 
         /*
-         * Creazione di un array di OGGETTI di tipo Persona 
+         * Creazione di un array di OGGETTI di tipo Persona
          */
         Persona[] arrayDiPersone = new Persona[3];
         arrayDiPersone[0] = persona1;
         arrayDiPersone[1] = persona2;
         arrayDiPersone[2] = personaOverload;
 
-        //Sfruttiamo gli array di oggetti per il passaggio diun ogetto come parametro +
+        // Sfruttiamo gli array di oggetti per il passaggio diun ogetto come parametro +
         arrayDiPersone[0].collega(arrayDiPersone[1]);
 
-        // Utilizzo di variabili statiche. Si accede non con l'istanza ma con la classe. 
+        // Utilizzo di variabili statiche. Si accede non con l'istanza ma con la classe.
         System.out.println("\nNumero di persone create: " + Persona.personeCounter);
-        
+
     }
 
+    private static void Ereditarietà() {
 
+        /*
+         * Ereditarietà: Studente eredita da Persona
+         * 
+         * Dato che studente estende persona ha accesso a utte le sue fuonzioni come
+         * stampaDati
+         */
+        Persona persona1 = new Persona("Luca", "Rossi");
+        Studente studente1 = new Studente("Luca", "Rossi", "Matematica", "3A");
+        Insegnante insegnante1 = new Insegnante("Luca", "Rossi", "Matematica", "3A", "3B");
+        studente1.stampaDati(true);
+
+        /*
+         * L'override di un metodo permette di sovrascrivere il metodo della classe
+         * padre
+         */
+        persona1.saluta();
+        studente1.saluta();
+        insegnante1.saluta();
+
+    }
+
+    private static void classe_astratta() {
+        auto_ClasseNonAstratta auto = new auto_ClasseNonAstratta();
+        System.out.println("\n-- Classe Astratta --");
+        auto.muovi();
+        auto.frena();
+    }
+
+    private static void interfaccia() {
+        /*
+         * Interfaccia: Un'interfaccia java è un contratto che definisce i metodi che
+         * una classe deve implementare
+         * Siminili alle classi astratte ma con la differenza che possono essere
+         * implementate da più classi.
+         * Una classe può estedere una sola classe astratta ma può implementare più
+         * interfacce
+         */
+
+        
+        // implementa solo una interfaccia
+        Leone leone = new Leone();
+        Gazzella gazzella = new Gazzella();
+        // implementa due interfacce
+        Pesce pesce = new Pesce();
+
+        gazzella.scappa();
+        leone.caccia();
+        pesce.caccia();
+        pesce.scappa();
+    }
 }
