@@ -17,43 +17,54 @@ public class Main {
          * STATIC:
          */
         final String[] argomenti = { "Array Bidimensionali", "Wrapper Classes", "Array List", "Classe Persona",
-                "Ereditarietà ed Overrride", "Classe Astratta", "Interfacce" };
+                "Ereditarietà ed Overrride", "Classe Astratta", "Interfacce","Polimoorfismo" };
         Scanner scannerArgomento = new Scanner(System.in);
 
-        System.out.println("Argomenti: \n");
-        for (int i = 0; i < argomenti.length; i++) {
-            System.out.println((i + 1) + " : " + argomenti[i]);
+        try: 
+            System.out.println("Argomenti: \n");
+            for (int i = 0; i < argomenti.length; i++) {
+                System.out.println((i + 1) + " : " + argomenti[i]);
+            }
+
+            System.out.println("\nInserisci il numero dell'argomento di cui vuoi vedere l'output: ");
+            scannerArgomento = new Scanner(System.in);
+
+            switch (scannerArgomento.nextInt() - 1) {
+                case 0:
+                    array_bidimensionali();
+                    break;
+                case 1:
+                    wrapper_classes();
+                    break;
+                case 2:
+                    array_list();
+                    break;
+                case 3:
+                    classe_persona();
+                    break;
+                case 4:
+                    Ereditarietà();
+                    break;
+                case 5:
+                    classe_astratta();
+                    break;
+                case 6:
+                    interfaccia();
+                    break;
+                case 7:
+                    polimorfismo();
+                    break;
+
+                default:
+                    System.out.println("SELEZIONE NON CORRETTA");
+                    break;
+            }
+        catch (Exception e) {
+            System.out.println("Errore: " + e);
         }
-
-        System.out.println("\nInserisci il numero dell'argomento di cui vuoi vedere l'output: ");
-        scannerArgomento = new Scanner(System.in);
-
-        switch (scannerArgomento.nextInt() - 1) {
-            case 0:
-                array_bidimensionali();
-                break;
-            case 1:
-                wrapper_classes();
-                break;
-            case 2:
-                array_list();
-                break;
-            case 3:
-                classe_persona();
-                break;
-            case 4:
-                Ereditarietà();
-                break;
-            case 5:
-                classe_astratta();
-                break;
-            case 6:
-                interfaccia();
-                break;
-
-            default:
-                System.out.println("SELEZIONE NON CORRETTA");
-                break;
+        finally {
+            // A prescindere di quello che succede chiudo lo scanner e continua l'eseuzione
+            scannerArgomento.close();
         }
 
     }
@@ -256,4 +267,30 @@ public class Main {
         pesce.caccia();
         pesce.scappa();
     }
+
+    private static void polimorfismo() {
+        System.out.println("\n-- Polimorfismo --");
+        /*
+         * un oggetto può assumere più forme. Colegarsi a più tipi di dato
+         */
+         
+         Studente studente1 = new Studente("Luca", "Rossi", "Matematica", "3A");    
+         Insegnante insegnante1 = new Insegnante("MArco", "Toppa", "Matematica", "3A", "3B");
+
+        /*
+         * Polimorfismo: Questi due oggetti possono cambiare forma ed identificarsi in una nuova forma che lia ccetti entrami 
+         * 
+         * Ad esempio Studente e Insegnante estedono entrambi perosna e quindi possono essere inseriti in un array di persona
+         */
+         // Studente[] classe = { studente1, insegnante1 };
+         // Insegnante[] clsse = { studente1, insegnante1 };
+        Persona[] classe = { studente1, insegnante1 };
+
+        // Possiamo utilizzare i metodi in comune tra le tre classi
+        for(Persona persona : classe){
+            persona.saluta();
+        }
+
+    }
+
 }
