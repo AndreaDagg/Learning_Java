@@ -1,7 +1,20 @@
 package Corso_Java;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.stream.Stream;
+
+import javax.xml.crypto.Data;
 
 import Corso_Java.Interfaccie.Gazzella;
 import Corso_Java.Interfaccie.Leone;
@@ -10,17 +23,18 @@ import Corso_Java.classi_astratte.auto_ClasseNonAstratta;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
          * FINAL: Creazione di un menu per selezionare l'argomento da visualizzare con
          * keyword FINAL ovvero non modificabile
          * STATIC:
          */
         final String[] argomenti = { "Array Bidimensionali", "Wrapper Classes", "Array List", "Classe Persona",
-                "Ereditarietà ed Overrride", "Classe Astratta", "Interfacce","Polimoorfismo" };
+                "Ereditarietà ed Overrride", "Classe Astratta", "Interfacce", "Polimoorfismo", "Files", "HashMap", "Iteratore" };
         Scanner scannerArgomento = new Scanner(System.in);
+        int selezionato = -1;
 
-        try: 
+        try {
             System.out.println("Argomenti: \n");
             for (int i = 0; i < argomenti.length; i++) {
                 System.out.println((i + 1) + " : " + argomenti[i]);
@@ -28,42 +42,73 @@ public class Main {
 
             System.out.println("\nInserisci il numero dell'argomento di cui vuoi vedere l'output: ");
             scannerArgomento = new Scanner(System.in);
-
-            switch (scannerArgomento.nextInt() - 1) {
+            selezionato = scannerArgomento.nextInt();
+            switch (selezionato - 1) {
                 case 0:
+                System.out.println("\n\n");
                     array_bidimensionali();
                     break;
                 case 1:
+                System.out.println("\n\n");
                     wrapper_classes();
                     break;
                 case 2:
+                System.out.println("\n\n");
                     array_list();
                     break;
                 case 3:
+                System.out.println("\n\n");
                     classe_persona();
                     break;
                 case 4:
+                System.out.println("\n\n");
                     Ereditarietà();
                     break;
                 case 5:
+                System.out.println("\n\n");
                     classe_astratta();
                     break;
                 case 6:
+                System.out.println("\n\n");
                     interfaccia();
                     break;
                 case 7:
+                System.out.println("\n\n");
                     polimorfismo();
+                    break;
+                case 8:
+                System.out.println("\n\n");
+                    Files();
+                    break;
+                case 9:
+                System.out.println("\n\n");
+                    Hashmap();
+                    break;
+                case 10:
+                System.out.println("\n\n");
+                    Iteratore();
                     break;
 
                 default:
                     System.out.println("SELEZIONE NON CORRETTA");
                     break;
             }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Errore: " + e);
-        }
-        finally {
+        } finally {
             // A prescindere di quello che succede chiudo lo scanner e continua l'eseuzione
+             try {
+                String nomeFile = "file/log" + LocalDate.now().toString() + ".txt";
+                PrintStream fileStream = new PrintStream(new FileOutputStream(nomeFile, true));
+                fileStream.append("\n\n" + LocalDate.now().toString() + " AT " + LocalTime.now().toString()+ " || ");
+                fileStream.print("Argomento selezionato: " + (selezionato) + " ");
+                fileStream.append(System.out.toString());
+                fileStream.close();
+                System.out.println("Fine Esecuzione");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             scannerArgomento.close();
         }
 
@@ -255,7 +300,6 @@ public class Main {
          * interfacce
          */
 
-        
         // implementa solo una interfaccia
         Leone leone = new Leone();
         Gazzella gazzella = new Gazzella();
@@ -273,24 +317,90 @@ public class Main {
         /*
          * un oggetto può assumere più forme. Colegarsi a più tipi di dato
          */
-         
-         Studente studente1 = new Studente("Luca", "Rossi", "Matematica", "3A");    
-         Insegnante insegnante1 = new Insegnante("MArco", "Toppa", "Matematica", "3A", "3B");
+
+        Studente studente1 = new Studente("Luca", "Rossi", "Matematica", "3A");
+        Insegnante insegnante1 = new Insegnante("MArco", "Toppa", "Matematica", "3A", "3B");
 
         /*
-         * Polimorfismo: Questi due oggetti possono cambiare forma ed identificarsi in una nuova forma che lia ccetti entrami 
+         * Polimorfismo: Questi due oggetti possono cambiare forma ed identificarsi in
+         * una nuova forma che lia ccetti entrami
          * 
-         * Ad esempio Studente e Insegnante estedono entrambi perosna e quindi possono essere inseriti in un array di persona
+         * Ad esempio Studente e Insegnante estedono entrambi perosna e quindi possono
+         * essere inseriti in un array di persona
          */
-         // Studente[] classe = { studente1, insegnante1 };
-         // Insegnante[] clsse = { studente1, insegnante1 };
+        // Studente[] classe = { studente1, insegnante1 };
+        // Insegnante[] clsse = { studente1, insegnante1 };
         Persona[] classe = { studente1, insegnante1 };
 
         // Possiamo utilizzare i metodi in comune tra le tre classi
-        for(Persona persona : classe){
+        for (Persona persona : classe) {
             persona.saluta();
         }
 
     }
 
+    private static void Files() throws IOException {
+        File file = new File("file\\prova.txt");
+        FileWriter fileWriter = new FileWriter("file\\log.txt");
+
+        if (file.exists()) {
+            System.out.println("Il file esiste. Path: " + file.getPath());
+            System.out.println("Il file esiste. Path Absolute: " + file.getAbsolutePath());
+            System.out.println("è una directory: " + file.isDirectory());
+            System.out.println("è un file: " + file.isFile());
+        } else {
+            System.out.println("Il file non esiste");
+        }
+
+        fileWriter.write("Ciao - ");
+        fileWriter.append(LocalDate.now().toString());
+        fileWriter.close();
+
+    }
+
+    private static void Hashmap() {
+        /*
+         * HashMap: è una collezione che permette di memorizzare coppie chiave-valore
+         * 
+         * HashMap<Chiave, Valore>
+         */
+
+         HashMap<String, String> capitali = new HashMap<String, String>();
+            capitali.put("Italia", "Roma");
+            capitali.put("Francia", "Parigi");
+            capitali.put("Germania", "Berlino");
+            capitali.put("Spagna", "Madrid");
+            capitali.put("Inghilterra", "Londra");
+
+
+            for (String key : capitali.keySet()) {
+                System.out.println(key + " : " + capitali.get(key));
+            }
+
+
+
+    }
+
+    private static void Iteratore(){
+        ArrayList<String> persone = new ArrayList<String>();
+        persone.add("Mario");
+        persone.add("Luigi");
+        persone.add("Giovanni");
+        
+        Iterator<String> iterator = persone.iterator();
+        System.out.println("\nIteratore: ");
+        while(iterator.hasNext()){
+            String persona = iterator.next();
+            System.out.println(persona);
+            if(persona.equals("Luigi")){
+                try { 
+                     iterator.remove();
+                     System.out.println("Persona "+ persona + " rimossa");
+                } catch (Exception e) {
+                    System.out.println("Errore: " + e);
+                } 
+            }
+        }
+
+    }
 }
